@@ -67,7 +67,7 @@ const removeNote = (note: string) => {
           alignItems: "center",
         }}
       >
-        <NoteBox note={currentNote} />
+        <NoteBox note={currentNote} setStart={setStart}/>
         <Timer
           timerTotal={timerTotal}
           timerInterval={timerInterval}

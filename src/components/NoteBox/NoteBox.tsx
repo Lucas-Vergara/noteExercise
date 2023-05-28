@@ -3,13 +3,18 @@ import React from "react";
 
 type Props = {
   note: string;
+  setStart: (boolean: boolean) => void;
+
 }
 
 function NoteBox(props: Props) {
-  const { note } = props;
+  const { note, setStart } = props;
+  const handleClick = (): void => {
+    setStart(true)
+  };
 
   return (
-    <Box display="inline-block">
+    <Box display="inline-block" onClick={handleClick}>
       <Card
         sx={{
           backgroundColor: "#415986ff",
