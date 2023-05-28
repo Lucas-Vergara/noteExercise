@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Lucas-Vergara/notesExercise/precache-manifest.689561af9fcc90331fb20dda8b28fa0f.js"
+  "/notesExercise/precache-manifest.3feacfcfbdeafcbd665735d7725251c8.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/Lucas-Vergara/notesExercise/index.html", {
+workbox.routing.registerNavigationRoute("/notesExercise/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
