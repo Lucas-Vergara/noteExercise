@@ -3,14 +3,16 @@ import React from "react";
 
 type Props = {
   note: string;
-  setStart: (boolean: boolean) => void;
-
-}
+  notes: string[];
+  setStart: React.Dispatch<React.SetStateAction<boolean>>;
+  removeNote: (note: string) => void;
+  setCurrentNote: (note: string) => void;
+};
 
 function NoteBox(props: Props) {
   const { note, setStart } = props;
   const handleClick = (): void => {
-    setStart(true)
+    setStart((prevStart) => !prevStart);
   };
 
   return (
@@ -19,17 +21,19 @@ function NoteBox(props: Props) {
         sx={{
           backgroundColor: "#415986ff",
           borderRadius: "50%",
-          minWidth:'20vw',
-          minHeight:'20vw'
+          minWidth: "20vw",
+          minHeight: "20vw",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+          cursor: "pointer",
         }}
       >
         <CardContent
           sx={{
             fontSize: "25vh",
-            color:'#FBF3EAff',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            color: "#FBF3EAff",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           {note}

@@ -16,7 +16,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ collapsed,setTimerTotal, setTimerInterval }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(collapsed);
   const [timerTotal, setTimerTotalState] = useState<number>(900); // 15 MINUTES
-  const [timerInterval, setTimerIntervalState] = useState<number>(30); 
+  const [timerInterval, setTimerIntervalState] = useState<number>(20); 
 
   const handleToggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);

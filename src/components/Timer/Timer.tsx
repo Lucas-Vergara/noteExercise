@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import PlayButton from "./PlayButton";
+import EndButton from "./EndButton";
+import RestartButton from "./RestartButton";
 
 type Props = {
   timerTotal: number;
@@ -10,17 +13,24 @@ type Props = {
 };
 
 function Timer(props: Props) {
-  const { timerTotal, timerInterval, start, removeNote, notes, setCurrentNote} = props;
-  const [time, setTime] = useState(timerTotal);
-  const [running, setRunning] = useState<boolean>(start);
-  
-  useEffect(()=> {
-    setRunning(start)
-  }, [start])
+  const {
+    timerTotal,
+    timerInterval,
+    start,
+    removeNote,
+    notes,
+    setCurrentNote,
+  } = props;
+  const [time, setTime] = useState<number>(timerTotal);
+  const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
-    setTime(timerTotal)
-  }, [timerTotal])
+    setRunning((prevRunning) => !prevRunning);
+  }, [start]);
+
+  useEffect(() => {
+    setTime(timerTotal);
+  }, [timerTotal]);
 
   useEffect(() => {
     if (running) {
@@ -31,16 +41,22 @@ function Timer(props: Props) {
     }
   }, [running]);
 
+  // change notes
   useEffect(() => {
     if (running) {
+      if (time === timerTotal) {
+        const randomIndex = Math.floor(Math.random() * notes.length);
+        const selectedNote = notes[randomIndex];
+        // removeNote(selectedNote);
+        setCurrentNote(selectedNote);
+      }
       const intervalTimer = setInterval(() => {
         const randomIndex = Math.floor(Math.random() * notes.length);
         const selectedNote = notes[randomIndex];
-        removeNote(selectedNote);
-        setCurrentNote(selectedNote)
+        // removeNote(selectedNote);
+        setCurrentNote(selectedNote);
       }, timerInterval * 1000);
 
-      
       return () => clearInterval(intervalTimer);
     }
   }, [timerInterval, running]);
@@ -63,9 +79,65 @@ function Timer(props: Props) {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   };
 
+  const handlePauseContinue = () => {
+    setRunning((prevRunning) => !prevRunning);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  const handleFinish = () => {
+    setTime(0);
+    setRunning(false);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  const handleReset = () => {
+    setTime(timerTotal);
+    setRunning(false);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.code === "Space") {
+      setRunning((prevRunning) => !prevRunning);
+      if (time === 0) {
+        setTime(timerTotal)
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      handleKeyPress(event);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [time]);
+
   return time > 0 ? (
-    <div style={{ fontSize: "7vh", color: "#415986ff" }}>
-      {formatTime(time)}
+    <div>
+      <div style={{ fontSize: "7vh", color: "#415986ff" }}>
+        {formatTime(time)}
+      </div>
+      <div style={{ display: "flex", gap: 10 }}>
+        <div onClick={handlePauseContinue}>
+          <PlayButton running={running} />
+        </div>
+        <div onClick={handleReset}>
+          <RestartButton />
+        </div>
+        <div onClick={handleFinish}>
+          <EndButton />
+        </div>
+      </div>
     </div>
   ) : null;
 }

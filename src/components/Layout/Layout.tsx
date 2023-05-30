@@ -8,37 +8,15 @@ import { allNotes } from "./notes";
 const Layout = () => {
   const [start, setStart] = useState<boolean>(false);
   const [timerTotal, setTimerTotal] = useState<number>(900); // 15 MINUTES
-  const [timerInterval, setTimerInterval] = useState<number>(30);
+  const [timerInterval, setTimerInterval] = useState<number>(20);
 
   const [notes, setNotes] = useState<string[]>(allNotes);
   const [currentNote, setCurrentNote] = useState<string>("𝄞");
 
-const removeNote = (note: string) => {
-  const updatedNotes = notes.filter((n) => n !== note);
-  setNotes(updatedNotes);
-};
-
-  const handleKeyPress = (event: KeyboardEvent) => {
-    if (event.code === "Space") {
-      setStart(true);
-      const randomIndex = Math.floor(Math.random() * notes.length);
-      const selectedNote = notes[randomIndex];
-      removeNote(selectedNote);
-      setCurrentNote(selectedNote)
-    }
+  const removeNote = (note: string) => {
+    const updatedNotes = notes.filter((n) => n !== note);
+    setNotes(updatedNotes);
   };
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      handleKeyPress(event);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   return (
     <Grid
@@ -67,7 +45,13 @@ const removeNote = (note: string) => {
           alignItems: "center",
         }}
       >
-        <NoteBox note={currentNote} setStart={setStart}/>
+        <NoteBox
+          note={currentNote}
+          notes={notes}
+          setStart={setStart}
+          removeNote={removeNote}
+          setCurrentNote={setCurrentNote}
+        />
         <Timer
           timerTotal={timerTotal}
           timerInterval={timerInterval}
